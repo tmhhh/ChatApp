@@ -1,0 +1,111 @@
+{{#section 'css'}}
+<link rel="stylesheet" href="./css/home.css">
+{{/section}}
+{{#section 'js'}}
+<script src="/socket.io/socket.io.js"></script>
+
+<script src="./js/home.js"></script>
+{{/section}}
+<div class="container-fluid">
+    <div style="height:100vh" class="row  ">
+        <div class="col-2 sidebar ">
+            <div class="row mb-4 mt-3 sidebar-header">
+                <div class="col-9 ">
+                    <div class="user-info ">
+                        <img height=40 width=40 src="{{user.userPic}}" alt="" class="user-image">
+                        <span class="user-name ">{{user.userName}}</span>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <a href="/logout" class="btnLogout btn btn-outline-primary">Log Out</a>
+                </div>
+
+            </div>
+
+            <div class="chat-rooms">
+                <i class="fas fa-arrow-down cursor"></i>
+                <span class="ml-4"> List Of Rooms</span>
+                <div class="list-rooms">
+                    {{#if Room}}
+                    {{#each this.Room }}
+
+                    <p class="room">
+                        <ion-icon name="home"></ion-icon> {{roomName}}
+                        <input type="hidden" class="txhRoomID" value={{roomID}} </p>
+                        {{/each}}
+                        {{else}}
+
+                        {{/if}}
+
+                </div>
+                <div class="adding-room mt-4 ml-5">
+                    <i data-toggle="modal" data-target="#addroom-modal" class="fa fa-plus cursor"
+                        aria-hidden="true"></i>
+                    <a class="ml-4">Add Room</a>
+                </div>
+
+            </div>
+            <div class="list-users-online">
+                <div class="current-user">
+                    <img height="30" width="30" src="{{user.userPic}}" alt="" id="user-image">
+                    <span id="user-name">{{user.userName}}</span>
+                    <i class="fa fa-circle online-icon" aria-hidden="true"></i>
+                </div>
+                <div class="other-users">
+
+                </div>
+            </div>
+        </div>
+        <div class="col-10 chatbox-form">
+            <div style="justify-content: space-between; margin:5px auto" class="row chatbox-header">
+                <div class=" room-info">
+                    <h3 class="room-name"></h3>
+                    <p class="room-description"></p>
+                </div>
+                <div class="user-in-room">
+                    <i class="fa fa-user-circle" aria-hidden="true"></i>
+                    <i class="fa fa-plus-circle cursor" aria-hidden="true"></i>
+                    <img height=40 width=40 src="{{user.userPic}}" alt="" class="user-image" id="current-user-image">
+                    {{!-- <div style="display:inline-block" class="other-users"> --}}
+
+                    </div>
+                    {{!-- <img height=40 width=40
+                        src="https://yt3.ggpht.com/ytc/AKedOLQNdMc8El5k22-jNLl60NyZVRjWyOSxOLHzuaGR=s900-c-k-c0x00ffffff-no-rj"
+                        alt="" class="user-image"> --}}
+                </div>
+                <div style="" class="chatbox-content user-messages">
+                </div>
+
+
+            </div>
+
+            <form action="" class="chatbox-input">
+                <textarea name="" id="txaMessage" cols="30" rows="3" placeholder="Your message ... "></textarea>
+                <input id="btnSubmit" type="submit" class="btn btn-primary mb-5" value="Send">
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="addroom-modal" tabindex="-1" role="dialog">
+    <form action="room/add" method="POST">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Room Info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="roomName" id="txtRoomName" placeholder="Input room name ...">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
