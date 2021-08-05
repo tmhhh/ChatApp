@@ -119,13 +119,12 @@ io.on("connection", (socket) => {
           roomID: data.roomID,
         };
         const check = await messageModel.addMessage(message);
-        if (check.affectedRows > 0) {
-          socket.to(data.roomID).emit("room-message", {
-            room: data.roomID,
-            message: data.message,
-            user: data.user,
-          });
-        } else return;
+        if (check.affectedRows <= 0) return;
+        socket.to(data.roomID).emit("room-message", {
+          room: data.roomID,
+          message: data.message,
+          user: data.user,
+        });
       } catch (error) {
         console.log(error);
       }

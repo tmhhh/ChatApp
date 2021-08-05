@@ -18,4 +18,16 @@ module.exports = {
       res.json("error");
     }
   },
+  getMessagesByRoom: async (req, res) => {
+    try {
+      const roomID = req.query.roomID;
+      const data = await messageModel.getMessagesByRoomID(roomID);
+      if (Object.keys(data).length < 0) return res.json(null);
+      data.sort((a, b) => a.messageID - b.messageID);
+      return res.json(data);
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json(err);
+    }
+  },
 };

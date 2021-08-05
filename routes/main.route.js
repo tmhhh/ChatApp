@@ -4,7 +4,10 @@ const passport = require("passport");
 const authenticate = require("../middlewares/authenticate.mdw");
 const { addNewRoom } = require("../controllers/room.controller");
 const { chatHome } = require("../controllers/chat.controller");
-const { getUserMessages } = require("../controllers/message.controller");
+const {
+  getUserMessages,
+  getMessagesByRoom,
+} = require("../controllers/message.controller");
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("login");
@@ -51,5 +54,9 @@ router.get("/info", function (req, res, next) {
 });
 
 router.get("/user/messages", authenticate.checkAuthenticated, getUserMessages);
-
+router.get(
+  "/room/messages",
+  authenticate.checkAuthenticated,
+  getMessagesByRoom
+);
 module.exports = router;

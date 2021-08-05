@@ -56,7 +56,7 @@ module.exports = {
       });
     });
   },
-  getByCondition: (query, condition) => {
+  getWithCondition: (query, condition) => {
     return new Promise((resolve, reject) => {
       connection.query(query, condition, (err, result) => {
         if (err) reject(err);

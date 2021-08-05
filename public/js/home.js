@@ -65,7 +65,7 @@ const renderListClients = (listClients) => {
           ? e.target.children[3].defaultValue
           : e.target.parentElement.children[3].defaultValue;
       //
-      renderSavedMessages(otherSocketID);
+      renderPersonalSavedMessages();
       roomID = null;
     });
   });
@@ -75,7 +75,7 @@ function Validated(inputValue) {
   return inputValue.trim(" ");
 }
 
-const renderSavedMessages = () => {
+const renderPersonalSavedMessages = () => {
   listMessages.forEach((e) => {
     if (
       e.senderID === user.userID &&
@@ -119,6 +119,34 @@ const renderSavedMessages = () => {
     // <span class="">${e.messageContent}</span>
     //     </div>` + chatBox.innerHTML;
     //     }
+  });
+};
+const getRoomMessages = async () => {
+  const data = await fetch(
+    `http://localhost:4000/room/messages?roomID=${roomID}`
+  );
+  return data.json();
+};
+const renderRoomSavedMessage = async () => {
+  const data = await getRoomMessages();
+  data.forEach((e) => {
+    if (e.senderID === user.userID) {
+      chatBox.innerHTML =
+        ` <div class="user-message mt-3">
+      <span class="">${e.messageContent}</span>
+      <img height=40 width=40
+      src="${user.userPic}"
+      alt="">
+        </div>` + chatBox.innerHTML;
+    } else {
+      chatBox.innerHTML =
+        ` <div class="other-message mt-3">
+        <img height=40 width=40
+        src="${e.userPic}"
+        alt="">
+        <span class="">${e.messageContent}</span>
+        </div>` + chatBox.innerHTML;
+    }
   });
 };
 
@@ -202,7 +230,8 @@ listRooms.forEach((room, index) =>
     //   [index].textContent.trim("\n")
     //   .concat(index);
     roomID = document.querySelectorAll(".txhRoomID")[index].value;
-    renderSavedMessages();
+    console.log(roomID);
+    renderRoomSavedMessage();
 
     socket.emit("join-room-chat", { roomID });
   })
