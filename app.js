@@ -45,8 +45,6 @@ var user = {};
 app.use((req, res, next) => {
   if (req.user) {
     res.locals.user = req.user;
-    // console.log("mdw");
-    // console.log(res.locals.user);
     user = req.user;
   }
   next();
@@ -70,14 +68,11 @@ io.on("connection", (socket) => {
         roomID: null,
       };
       const check = await messageModel.addMessage(message);
-      if (check.affectedRows > 0) {
-        socket.join(data.otherSocketID);
-        socket
-          .to(data.otherSocketID)
-          .emit("private-message", { message: data.message, user: data.user });
-      } else {
-        return;
-      }
+      if (check.affectedRows <= 0) return;
+      socket.join(data.otherSocketID);
+      socket
+        .to(data.otherSocketID)
+        .emit("private-message", { message: data.message, user: data.user });
     } catch (error) {
       console.log(error);
     }
@@ -99,9 +94,11 @@ io.on("connection", (socket) => {
     //   listClients.push(client);
     //   checkExist = false;
     // }
+    console.log(listClients);
+    console.log(client.userID);
 
     //other way to check if the user exists in an array || cannot use includes or index of in this case!!!
-    var checkExist = listClients.some((e) => e.id == client.userID);
+    var checkExist = listClients.some((e) => e.userID === client.userID);
     console.log(checkExist);
     if (!checkExist) {
       listClients.push(client);
@@ -148,4 +145,5 @@ app.use("/", require("./routes/main.route"));
 server.listen(PORT, () => {
   console.log(`Sever is running at http://localhost:${PORT}`);
 });
+
 module.exports = app;

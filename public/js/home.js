@@ -77,8 +77,11 @@ function Validated(inputValue) {
 
 const renderSavedMessages = () => {
   listMessages.forEach((e) => {
-    if (e.senderID === user.userID && e.receiverID === otherSocketID) {
-      console.log("send");
+    if (
+      e.senderID === user.userID &&
+      e.receiverID === otherSocketID &&
+      e.roomID === null
+    ) {
       chatBox.innerHTML =
         ` <div class="user-message mt-3">
     <span class="">${e.messageContent}</span>
@@ -87,7 +90,6 @@ const renderSavedMessages = () => {
     alt="">
       </div>` + chatBox.innerHTML;
     } else if (e.receiverID === user.userID) {
-      console.log("recei");
       chatBox.innerHTML =
         ` <div class="mr-5 other-message mt-3">
     <img height=40 width=40
@@ -96,6 +98,27 @@ const renderSavedMessages = () => {
   <span class="">${e.messageContent}</span>
       </div>` + chatBox.innerHTML;
     }
+    //      else if (e.roomID === roomID && e.senderID === user.userID) {
+    //       chatBox.innerHTML =
+    //         ` <div class="user-message mt-3">
+    //   <span class="">${e.messageContent}</span>
+    //   <img height=40 width=40
+    //   src="${e.userPic}"
+    //   alt="">
+    //     </div>` + chatBox.innerHTML;
+    //     } else if (
+    //       e.roomID === roomID &&
+    //       e.senderID !== user.userID &&
+    //       e.receiverID === null
+    //     ) {
+    //       chatBox.innerHTML =
+    //         ` <div class="mr-5 other-message mt-3">
+    //   <img height=40 width=40
+    // src="${e.userPic}"
+    // alt="">
+    // <span class="">${e.messageContent}</span>
+    //     </div>` + chatBox.innerHTML;
+    //     }
   });
 };
 
@@ -179,7 +202,7 @@ listRooms.forEach((room, index) =>
     //   [index].textContent.trim("\n")
     //   .concat(index);
     roomID = document.querySelectorAll(".txhRoomID")[index].value;
-    console.log(roomID);
+    renderSavedMessages();
 
     socket.emit("join-room-chat", { roomID });
   })

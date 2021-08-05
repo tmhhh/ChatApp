@@ -51,4 +51,5 @@ router.get("/info", function (req, res, next) {
 });
 
 router.get("/user/messages", authenticate.checkAuthenticated, getUserMessages);
+
 module.exports = router;

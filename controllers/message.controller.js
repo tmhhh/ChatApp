@@ -8,8 +8,8 @@ module.exports = {
         messageModel.getUserSendingMessages(req.user.userID),
       ]);
       var messages = [...data[0], ...data[1]];
-      //   messages = messages.sort((a, b) => b.messageID - a.messageID);
-
+      messages = messages.sort((a, b) => a.messageID - b.messageID);
+      console.log(messages);
       res.json(messages);
       //   if (Object.keys(messages).length > 0) return res.json(messages);
       //   return res.json("error");
